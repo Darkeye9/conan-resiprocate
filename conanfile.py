@@ -24,13 +24,15 @@ class ResiprocateConan(ConanFile):
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         env_build.fpic = True
+        env_build.cxx_flags.append("-w")
         with tools.environment_append(env_build.vars):
             configure_args = ['--prefix=%s' % self.install_dir]
+            configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
-                env_build.make(args=["all"])
+                env_build.make(args=["--quiet", "all"])
                 if self.scope.dev == True:
-                    env_build.make(args=["check"])
+                    env_build.make(args=["--quiet", "check"])
                 env_build.make(args=["install"])
 
     def package(self):
