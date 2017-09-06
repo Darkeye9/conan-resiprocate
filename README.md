@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/uilianries/conan-resiprocate.svg?branch=release/1.10.2)](https://travis-ci.org/uilianries/conan-resiprocate)
-[![License: Generous BSD-like](https://img.shields.io/badge/License-BSD-like-blue.svg)](https://github.com/resiprocate/resiprocate/blob/master/COPYING)
+[![License: Generous BSD-like](https://img.shields.io/badge/license-Generous%20BSD--like-blue.svg)](https://github.com/resiprocate/resiprocate/blob/master/COPYING)
 [![Download](https://api.bintray.com/packages/uilianries/conan/resiprocate%3Auilianries/images/download.svg?version=1.10.2%3Astable)](https://bintray.com/uilianries/conan/resiprocate%3Auilianries/1.10.2%3Astable/link)
 
 # conan-reSIProcate

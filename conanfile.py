@@ -12,7 +12,7 @@ class ResiprocateConan(ConanFile):
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
-    default_options = "shared=False"
+    default_options = "shared=True"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -43,6 +43,6 @@ class ResiprocateConan(ConanFile):
             self.copy(pattern="*.la", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
 
     def package_info(self):
-        self.cpp_info.libs = self.collect_libs()
+        self.cpp_info.libs = ["resip", "rutil", "dum", "resipares"]
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")

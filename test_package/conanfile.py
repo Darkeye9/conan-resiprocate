@@ -4,9 +4,9 @@ import os
 
 class ResiprocateTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    generators = "cmake"
     user = os.getenv("CONAN_USERNAME", "uilianries")
     channel = os.getenv("CONAN_CHANNEL", "testing")
-    generators = "cmake"
     requires = "resiprocate/1.10.2@%s/%s" % (user, channel)
 
     def build(self):
