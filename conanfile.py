@@ -55,6 +55,8 @@ class ResiprocateConan(ConanFile):
                 package_manager.install(packages=' '.join(package_names))
 
     def build(self):
+        tools.replace_in_file(os.path.join(self.release_name, "configure.ac"), 'AC_SUBST(LIBMYSQL_LIBADD, "-lmysqlclient_r")', 'AC_SUBST(LIBMYSQL_LIBADD, "-lmysqlclient")')
+        tools.replace_in_file(os.path.join(self.release_name, "configure"), 'LIBMYSQL_LIBADD="-lmysqlclient_r"', 'LIBMYSQL_LIBADD="-lmysqlclient"')
         env_build = AutoToolsBuildEnvironment(self)
         env_build.fpic = True
         env_build.cxx_flags.append("-w")
