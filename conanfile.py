@@ -11,8 +11,8 @@ class ResiprocateConan(ConanFile):
     author = "Uilian Ries <uilianries@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False]}
-    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False", "with_tfm=False"
+    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False], "with_mysql": [True, False]}
+    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False", "with_tfm=False", "with_mysql=False"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -56,6 +56,7 @@ class ResiprocateConan(ConanFile):
             configure_args.append("--with-geoip" if self.options.with_geoip else "")
             configure_args.append("--with-repro" if self.options.with_repro else "")
             configure_args.append("--with-tfm" if self.options.with_tfm else "")
+            configure_args.append("--with-mysql" if self.options.with_mysql else "")
             configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
