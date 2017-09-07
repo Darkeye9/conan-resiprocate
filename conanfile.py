@@ -21,6 +21,12 @@ class ResiprocateConan(ConanFile):
     def source(self):
         tools.get("https://www.resiprocate.org/files/pub/reSIProcate/releases/resiprocate-%s.tar.gz" % self.version)
 
+    def configure(self):
+        if self.options.with_tfm:
+            self.options.with_repro = True
+        if self.options.with_repro:
+            self.options.with_popt = True
+
     def system_requirements(self):
         if self.settings.os == "Linux":
             package_names = []
@@ -31,6 +37,11 @@ class ResiprocateConan(ConanFile):
             if self.options.with_repro:
                 package_names.append("libdb5.3++-dev")
                 package_names.append("libcajun-dev")
+            if self.options.with_tfm:
+                package_names.append("libtfm-dev")
+                package_names.append("libboost-system-dev")
+                package_names.append("libcppunit-dev")
+                package_names.append("libnetxx-dev")
             if package_names:
                 package_manager = tools.SystemPackageTool()
                 package_manager.install(packages=' '.join(package_names))
@@ -77,3 +88,8 @@ class ResiprocateConan(ConanFile):
                 self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
                 self.cpp_info.libs.append("db")
                 self.cpp_info.libs.append("repro")
+            if self.options.with_tfm:
+                self.cpp_info.libs.append("tfm")
+                self.cpp_info.libs.append("boost_system")
+                self.cpp_info.libs.append("cppunit")
+                self.cpp_info.libs.append("Netxx")
