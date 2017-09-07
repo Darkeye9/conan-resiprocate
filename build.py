@@ -10,5 +10,9 @@ if __name__ == "__main__":
         options["resiprocate:with_popt"] = True
         options["resiprocate:with_geoip"] = True
         options["resiprocate:with_repro"] = True
+        options["resiprocate:with_tfm"] = True
+        options["resiprocate:with_mysql"] = True
+        options["resiprocate:with_ssl"] = True
+        options["resiprocate:enable_ipv6"] = True
     builder.builds.extend(extra_builds)
     builder.run()
