@@ -46,6 +46,8 @@ class ResiprocateConan(ConanFile):
             if self.options.with_tfm:
                 package_names.append("libcppunit-dev")
                 package_names.append("libnetxx-dev")
+            if self.options.with_mysql:
+                package_names.append("libmysqlclient-dev")
             if self.options.with_ssl:
                 package_names.append("libasio-dev")
             if package_names:
@@ -93,6 +95,8 @@ class ResiprocateConan(ConanFile):
                 self.cpp_info.libs.append("popt")
             if self.options.with_geoip:
                 self.cpp_info.libs.append("GeoIP")
+            if self.options.with_mysql:
+                self.cpp_info.libs.append("mysqlclient")
             if self.options.with_repro:
                 self.cpp_info.libs.append("db")
                 self.cpp_info.libs.append("repro")
