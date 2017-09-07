@@ -11,8 +11,8 @@ class ResiprocateConan(ConanFile):
     author = "Uilian Ries <uilianries@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False], "with_mysql": [True, False]}
-    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False", "with_tfm=False", "with_mysql=False"
+    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False], "with_mysql": [True, False], "enable_ipv6": [True, False]}
+    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False", "with_tfm=False", "with_mysql=False", "enable_ipv6=False"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -38,7 +38,6 @@ class ResiprocateConan(ConanFile):
                 package_names.append("libdb5.3++-dev")
                 package_names.append("libcajun-dev")
             if self.options.with_tfm:
-                package_names.append("libtfm-dev")
                 package_names.append("libboost-system-dev")
                 package_names.append("libcppunit-dev")
                 package_names.append("libnetxx-dev")
@@ -57,6 +56,7 @@ class ResiprocateConan(ConanFile):
             configure_args.append("--with-repro" if self.options.with_repro else "")
             configure_args.append("--with-tfm" if self.options.with_tfm else "")
             configure_args.append("--with-mysql" if self.options.with_mysql else "")
+            configure_args.append("--enable-ipv6" if self.options.enable_ipv6 else "")
             configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
@@ -91,6 +91,7 @@ class ResiprocateConan(ConanFile):
                 self.cpp_info.libs.append("repro")
             if self.options.with_tfm:
                 self.cpp_info.libs.append("tfm")
+                self.cpp_info.libs.append("tfmrepro")
                 self.cpp_info.libs.append("boost_system")
                 self.cpp_info.libs.append("cppunit")
                 self.cpp_info.libs.append("Netxx")
