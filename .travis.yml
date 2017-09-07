@@ -6,6 +6,7 @@ env:
      - CONAN_UPLOAD_ONLY_WHEN_STABLE: "TRUE"
      - CONAN_STABLE_BRANCH_PATTERN: "release/*"
      - CONAN_TOTAL_PAGES: 2
+     - CONAN_ARCHS: x86_64
 
 linux: &linux
    os: linux
