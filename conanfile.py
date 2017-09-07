@@ -11,8 +11,8 @@ class ResiprocateConan(ConanFile):
     author = "Uilian Ries <uilianries@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False]}
-    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False"
+    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False]}
+    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False", "with_tfm=False"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -28,6 +28,9 @@ class ResiprocateConan(ConanFile):
                 package_names.append("libpopt-dev")
             if self.options.with_geoip:
                 package_names.append("libgeoip-dev")
+            if self.options.with_repro:
+                package_names.append("libdb5.3++-dev")
+                package_names.append("libcajun-dev")
             if package_names:
                 package_manager = tools.SystemPackageTool()
                 package_manager.install(packages=' '.join(package_names))
@@ -41,6 +44,7 @@ class ResiprocateConan(ConanFile):
             configure_args.append("--with-popt" if self.options.with_popt else "")
             configure_args.append("--with-geoip" if self.options.with_geoip else "")
             configure_args.append("--with-repro" if self.options.with_repro else "")
+            configure_args.append("--with-tfm" if self.options.with_tfm else "")
             configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
@@ -52,6 +56,8 @@ class ResiprocateConan(ConanFile):
     def package(self):
         self.copy("LICENSE", src=self.release_name, dst=".", keep_path=False)
         self.copy(pattern="*", dst="include", src=os.path.join(self.install_dir, "include"))
+        if self.options.with_repro:
+            self.copy(pattern="*", dst="bin", src=os.path.join(self.install_dir, "sbin"), keep_path=False)
         if self.options.shared:
             self.copy(pattern="*.so*", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
             self.copy(pattern="*.dylib", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
@@ -63,3 +69,11 @@ class ResiprocateConan(ConanFile):
         self.cpp_info.libs = ["resip", "rutil", "dum", "resipares"]
         if self.settings.os == "Linux":
             self.cpp_info.libs.append("pthread")
+            if self.options.with_popt:
+                self.cpp_info.libs.append("popt")
+            if self.options.with_geoip:
+                self.cpp_info.libs.append("GeoIP")
+            if self.options.with_repro:
+                self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
+                self.cpp_info.libs.append("db")
+                self.cpp_info.libs.append("repro")
