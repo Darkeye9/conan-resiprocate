@@ -11,8 +11,8 @@ class ResiprocateConan(ConanFile):
     author = "Uilian Ries <uilianries@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False]}
-    default_options = "shared=True", "with_popt=False", "with_geoip=False"
+    options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False]}
+    default_options = "shared=True", "with_popt=False", "with_geoip=False", "with_repro=False"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -20,11 +20,6 @@ class ResiprocateConan(ConanFile):
 
     def source(self):
         tools.get("https://www.resiprocate.org/files/pub/reSIProcate/releases/resiprocate-%s.tar.gz" % self.version)
-
-    def config_options(self):
-        if self.settings.os != "Linux":
-            del self.options.with_popt
-            del self.options.with_geoip
 
     def system_requirements(self):
         if self.settings.os == "Linux":
@@ -45,6 +40,7 @@ class ResiprocateConan(ConanFile):
             configure_args = ['--prefix=%s' % self.install_dir]
             configure_args.append("--with-popt" if self.options.with_popt else "")
             configure_args.append("--with-geoip" if self.options.with_geoip else "")
+            configure_args.append("--with-repro" if self.options.with_repro else "")
             configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)

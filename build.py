@@ -9,5 +9,6 @@ if __name__ == "__main__":
     for settings, options, env_vars, build_requires in extra_builds:
         options["resiprocate:with_popt"] = True
         options["resiprocate:with_geoip"] = True
+        options["resiprocate:with_repro"] = True
     builder.builds.extend(extra_builds)
     builder.run()
