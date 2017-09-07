@@ -11,8 +11,8 @@ class ResiprocateConan(ConanFile):
     author = "Uilian Ries <uilianries@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=True"
+    options = {"shared": [True, False], "with_popt": [True,False]}
+    default_options = "shared=True", "with_popt=False"
     generators = "cmake"
     exports = "LICENSE"
     release_name = "%s-%s" % (name, version)
@@ -21,12 +21,23 @@ class ResiprocateConan(ConanFile):
     def source(self):
         tools.get("https://www.resiprocate.org/files/pub/reSIProcate/releases/resiprocate-%s.tar.gz" % self.version)
 
+    def config_options(self):
+        if self.settings.os != "Linux":
+            del self.options.with_popt
+
+    def system_requirements(self):
+        if self.settings.os == "Linux":
+            if self.options.with_popt:
+                package_manager = tools.SystemPackageTool()
+                package_manager.install(packages="libpopt-dev")
+
     def build(self):
         env_build = AutoToolsBuildEnvironment(self)
         env_build.fpic = True
         env_build.cxx_flags.append("-w")
         with tools.environment_append(env_build.vars):
             configure_args = ['--prefix=%s' % self.install_dir]
+            configure_args.append("--with-popt" if self.options.with_popt else "")
             configure_args.append("--enable-silent-rules")
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
