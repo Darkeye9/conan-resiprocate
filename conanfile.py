@@ -40,6 +40,7 @@ class ResiprocateConan(ConanFile):
         self.copy(pattern="*", dst="include", src=os.path.join(self.install_dir, "include"))
         if self.options.shared:
             self.copy(pattern="*.so*", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
+            self.copy(pattern="*.dylib", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
         else:
             self.copy(pattern="*.a", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
             self.copy(pattern="*.la", dst="lib", src=os.path.join(self.install_dir, "lib"), keep_path=False)
