@@ -8,7 +8,7 @@ class ResiprocateConan(ConanFile):
     version = "1.10.2"
     license = "https://github.com/resiprocate/resiprocate/blob/master/COPYING"
     url = "https://github.com/uilianries/conan-resiprocate"
-    author = "Uilian Ries <uilianries@gmail.com>"
+    author = "Uilian Ries <uilianries@gmail.com> | Modified by Dark_eye <dark.eye9@gmail.com>"
     description = "C++ implementation of SIP, ICE, TURN and related protocols"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False], "with_popt": [True,False], "with_geoip": [True, False], "with_repro": [True, False], "with_tfm": [True, False], "with_mysql": [True, False], "with_ssl": [True, False], "enable_ipv6": [True, False]}
@@ -73,8 +73,6 @@ class ResiprocateConan(ConanFile):
             with tools.chdir(self.release_name):
                 env_build.configure(args=configure_args)
                 env_build.make(args=["--quiet", "all"])
-                if self.scope.dev == True:
-                    env_build.make(args=["--quiet", "check"])
                 env_build.make(args=["install"])
 
     def package(self):
